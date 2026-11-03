@@ -1,0 +1,18 @@
+---
+import { contact, contactLinks, copy } from '../data/site';
+const c = copy.contactSection;
+---
+{contact.availability && <p class="contact-block__availability">{contact.availability}</p>}
+{contactLinks.length > 0
+  ? (
+    <ul class="contact-block__links">
+      {contactLinks.map((link) => (
+        <li>
+          <a class="glass glass--pill" href={link.href} {...(link.external ? { rel: 'noopener noreferrer me', target: '_blank' } : {})}>
+            {link.key === 'email' ? contact.email : link.label}&nbsp;<span class="arrow arrow--red" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+  : <p class="contact-block__missing">{c.missing}</p>}

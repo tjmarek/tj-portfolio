@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import WorkSlot from '../components/WorkSlot.astro';
+import ExperienceFacts from '../components/ExperienceFacts.astro';
+import ContactBody from '../components/ContactBody.astro';
+import DraftTag from '../components/DraftTag.astro';
+import { assets, copy, draftLabels, routes, workSlots } from '../data/site';
+---
+<Base title={copy.meta.homeTitle} description={copy.meta.homeDescription}>
+  <main id="content">
+    <Hero />
+
+    <section class="section section--surface" id="work" aria-labelledby="work-heading">
+      <div class="section__head">
+        <h2 id="work-heading">{copy.work.heading}</h2>
+        <div>
+          <p class="lede">{copy.work.intro}</p>
+          <DraftTag label={draftLabels.section} />
+        </div>
+      </div>
+      <div class="work-slots">
+        {workSlots.map((slot) => <WorkSlot item={slot} linked />)}
+      </div>
+      <p><a class="text-link" href={routes.work}>View all work&nbsp;<span class="arrow" aria-hidden="true">↗</span></a></p>
+    </section>
+
+    <section class="section section--base" id="experience" aria-labelledby="experience-heading">
+      <div class="section__head">
+        <h2 id="experience-heading">{copy.experience.heading}</h2>
+        <div>
+          <p class="lede">{copy.experience.intro}</p>
+          <DraftTag label={draftLabels.section} />
+        </div>
+      </div>
+      <ExperienceFacts />
+      <p><a class="text-link" href={routes.experience}>{copy.experience.viewLink}&nbsp;<span class="arrow" aria-hidden="true">↗</span></a></p>
+    </section>
+
+    <section class="section section--surface intro" id="about" aria-labelledby="about-heading">
+      <div class="intro__photo">
+        <Image src={assets.portrait} widths={[420, 640, 840]} sizes="(max-width: 799px) 80vw, 420px" alt={copy.about.portraitAlt} loading="lazy" />
+      </div>
+      <div class="intro__text">
+        <h2 id="about-heading">{copy.about.heading}</h2>
+        {copy.about.intro.map((p) => <p class="lede">{p}</p>)}
+        <DraftTag label={draftLabels.section} />
+        <p><a class="text-link" href={routes.about}>{copy.about.link}&nbsp;<span class="arrow" aria-hidden="true">↗</span></a></p>
+      </div>
+    </section>
+
+    <section class="section section--charcoal contact-block" id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">{copy.contactSection.heading}</h2>
+      <div>
+        <p class="lede">{copy.contactSection.intro}</p>
+        <ContactBody />
+        <p><a class="text-link" href={routes.contact}>{copy.contactSection.link}&nbsp;<span class="arrow" aria-hidden="true">↗</span></a></p>
+      </div>
+    </section>
+  </main>
+</Base>

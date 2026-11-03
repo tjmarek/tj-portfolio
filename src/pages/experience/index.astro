@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import ExperienceFacts from '../../components/ExperienceFacts.astro';
+import DraftTag from '../../components/DraftTag.astro';
+import { copy, draftLabels, identity } from '../../data/site';
+---
+<Base inner title={`Experience | ${identity.fullName}`} description="Experience and résumé for TJ Marek. Provisional draft: verified details are pending.">
+  <main id="content" class="page">
+    <div class="section__head">
+      <h1>{copy.experience.heading}</h1>
+      <div>
+        <p class="lede">{copy.experience.intro}</p>
+        <DraftTag label={draftLabels.section} />
+      </div>
+    </div>
+    <ExperienceFacts />
+  </main>
+</Base>

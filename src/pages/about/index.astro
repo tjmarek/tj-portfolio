@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import DraftTag from '../../components/DraftTag.astro';
+import { assets, copy, draftLabels, identity, routes } from '../../data/site';
+---
+<Base inner title={`About | ${identity.fullName}`} description="About TJ Marek: digital marketing, web operations and design.">
+  <main id="content" class="page intro">
+    <div class="intro__photo">
+      <Image src={assets.portrait} widths={[420, 640, 840]} sizes="(max-width: 799px) 80vw, 420px" alt={copy.about.portraitAlt} loading="eager" />
+    </div>
+    <div class="intro__text">
+      <h1>{copy.about.heading}</h1>
+      {copy.about.intro.map((p) => <p class="lede">{p}</p>)}
+      <DraftTag label={draftLabels.section} />
+      <p><a class="text-link" href={routes.work}>See selected work&nbsp;<span class="arrow" aria-hidden="true">↗</span></a></p>
+    </div>
+  </main>
+</Base>

@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets';
+import { assets, identity, innerNav, routes } from '../data/site';
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+---
+<header class="inner-header">
+  <a class="inner-header__home" href={routes.home}>
+    <Image src={assets.logoRed} alt="" width={40} height={40} densities={[1, 2]} />
+    <span>{identity.fullName}</span>
+  </a>
+  <nav aria-label="Main">
+    <ul>
+      {innerNav.map((item) => (
+        <li><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+</header>

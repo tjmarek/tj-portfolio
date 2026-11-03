@@ -1,0 +1,120 @@
+---
+import { Image, Picture } from 'astro:assets';
+import PreviewArt from './PreviewArt.astro';
+import { assets, contactLinks, copy, draftLabels, identity, resume, routes, workSlots } from '../data/site';
+const resumeHref = resume.href ?? routes.experience;
+---
+<section class="hero" aria-label="Introduction">
+  <div class="hero__stage">
+    <div class="sage sage--upper" aria-hidden="true"></div>
+    <div class="sage sage--lower" aria-hidden="true"></div>
+    <div class="sage sage--fillet" aria-hidden="true"></div>
+
+    <div class="hero__portrait">
+      <Picture
+        src={assets.cutout}
+        formats={['avif', 'webp']}
+        widths={[480, 720, 914]}
+        sizes="(max-width: 599px) 100vw, (max-width: 959px) 58vw, min(54vw, 850px)"
+        alt={`Portrait of ${identity.fullName}, facing the camera.`}
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+
+    <a class="about-pocket" href={routes.about}>
+      <svg viewBox="0 0 196 140" aria-hidden="true" focusable="false">
+        <path d="M0 0H196A28 28 0 0 0 168 28V84A28 28 0 0 1 140 112H28A28 28 0 0 0 0 140Z" />
+      </svg>
+      <span class="about-pocket__label">
+        {copy.hero.aboutLines[0]}<br />{copy.hero.aboutLines[1]}&nbsp;<span class="arrow" aria-hidden="true">↗</span>
+      </span>
+    </a>
+
+    <Image class="hero__logo" src={assets.logoRed} alt="" width={56} height={56} densities={[1, 2]} />
+
+    <div class="identity">
+      <h1 class="identity__name">
+        <span>{identity.firstLine}</span> <span>{identity.secondLine}</span>
+      </h1>
+      <p class="identity__role">
+        {identity.roleLines.map((line) => <span>{line} </span>)}
+      </p>
+    </div>
+
+    <a class="hero__experience" href={resumeHref}>
+      {copy.hero.experienceLink}&nbsp;<span class="arrow" aria-hidden="true">↗</span>
+    </a>
+  </div>
+
+  <nav class="work-index" aria-labelledby="work-index-heading" data-work-index>
+    <div class="work-index__head">
+      <h2 id="work-index-heading">{copy.hero.workHeading}</h2>
+      <a href={routes.work}>{copy.hero.viewAll}&nbsp;<span class="arrow" aria-hidden="true">↗</span></a>
+    </div>
+    <div class="work-index__body">
+      <ul class="work-index__rows">
+        {workSlots.map((slot, i) => (
+          <li>
+            <a
+              class:list={['work-row', { 'is-selected': i === 0 }]}
+              href={`${routes.work}#${slot.slug}`}
+              data-preview={slot.slug}
+            >
+              <span>{slot.title}</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="work-preview" aria-hidden="true">
+        <div class="work-preview__frame">
+          {workSlots.map((slot, i) => (
+            <div class:list={['work-preview__art', { 'is-selected': i === 0 }]} data-preview-panel={slot.slug}>
+              <PreviewArt kind={slot.preview} />
+            </div>
+          ))}
+        </div>
+        <p class="work-preview__label">{draftLabels.visual}</p>
+      </div>
+    </div>
+  </nav>
+
+  <div class="contact-pocket" aria-hidden="true">
+    <svg viewBox="0 0 196 140" focusable="false">
+      <path d="M0 0H196A28 28 0 0 0 168 28V84A28 28 0 0 1 140 112H28A28 28 0 0 0 0 140Z" />
+    </svg>
+  </div>
+
+  <nav class:list={['constellation', { 'constellation--solo': contactLinks.length === 0 }]} aria-label="Contact">
+    <a class="glass glass--main" href={routes.contact}>
+      <span>{copy.hero.talkLines[0]}<br />{copy.hero.talkLines[1]}&nbsp;<span class="arrow arrow--red" aria-hidden="true">↗</span></span>
+    </a>
+    {contactLinks.map((link) => (
+      <a
+        class:list={['glass', 'glass--small', `glass--${link.key}`]}
+        href={link.href}
+        {...(link.external ? { rel: 'noopener noreferrer me', target: '_blank' } : {})}
+      >{link.label}</a>
+    ))}
+  </nav>
+</section>
+
+<script>
+  // Progressive enhancement only: links and the first preview work without this.
+  const index = document.querySelector<HTMLElement>('[data-work-index]');
+  if (index) {
+    const rows = [...index.querySelectorAll<HTMLAnchorElement>('[data-preview]')];
+    const panels = [...index.querySelectorAll<HTMLElement>('[data-preview-panel]')];
+    const select = (row: HTMLAnchorElement) => {
+      rows.forEach((r) => r.classList.toggle('is-selected', r === row));
+      panels.forEach((p) => p.classList.toggle('is-selected', p.dataset.previewPanel === row.dataset.preview));
+    };
+    rows.forEach((row) => {
+      // pointerdown covers touch, where there is no hover. The tap still navigates.
+      ['pointerenter', 'pointerdown', 'focus'].forEach((type) =>
+        row.addEventListener(type, () => select(row)),
+      );
+    });
+  }
+</script>

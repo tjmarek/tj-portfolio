@@ -1,0 +1,15 @@
+---
+import { Image } from 'astro:assets';
+import { assets, copy, identity, innerNav, routes } from '../data/site';
+---
+<footer class="site-footer">
+  <a class="site-footer__home" href={routes.home} aria-label={`${identity.fullName}, home`}>
+    <Image src={assets.logoSage} alt="" width={44} height={44} densities={[1, 2]} />
+  </a>
+  <p>{identity.role}<br /><span class="site-footer__note">{copy.footer.draftNote}</span></p>
+  <nav aria-label="Footer">
+    <ul>
+      {innerNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+    </ul>
+  </nav>
+</footer>

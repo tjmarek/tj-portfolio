@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import ContactBody from '../../components/ContactBody.astro';
+import { copy, identity } from '../../data/site';
+---
+<Base inner title={`Contact | ${identity.fullName}`} description="Contact TJ Marek about roles or freelance design, website and marketing projects.">
+  <main id="content" class="page contact-page section--charcoal contact-block">
+    <h1>{copy.contactSection.heading}</h1>
+    <div>
+      <p class="lede">{copy.contactSection.intro}</p>
+      <ContactBody />
+    </div>
+  </main>
+</Base>

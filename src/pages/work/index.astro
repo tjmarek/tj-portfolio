@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import WorkSlot from '../../components/WorkSlot.astro';
+import DraftTag from '../../components/DraftTag.astro';
+import { copy, draftLabels, identity, workSlots } from '../../data/site';
+---
+<Base inner title={`Work | ${identity.fullName}`} description="Selected work areas from TJ Marek. Provisional draft: project details are pending verification.">
+  <main id="content" class="page">
+    <div class="section__head">
+      <h1>{copy.work.heading}</h1>
+      <div>
+        <p class="lede">{copy.work.intro}</p>
+        <DraftTag label={draftLabels.section} />
+      </div>
+    </div>
+    <div class="work-slots">
+      {workSlots.map((slot) => <WorkSlot item={slot} heading="h2" />)}
+    </div>
+    <p class="experience__note">{copy.work.pendingNote}</p>
+  </main>
+</Base>

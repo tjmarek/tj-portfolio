@@ -1,0 +1,26 @@
+---
+import PreviewArt from './PreviewArt.astro';
+import { copy, draftLabels, routes, workSlots } from '../data/site';
+interface Props { item: (typeof workSlots)[number]; linked?: boolean; heading?: 'h2' | 'h3'; }
+const { item: slot, linked = false, heading = 'h3' } = Astro.props;
+const H = heading as 'h3';
+---
+<article class="work-slot" id={linked ? undefined : slot.slug}>
+  <figure class="work-slot__art">
+    <PreviewArt kind={slot.preview} />
+    <figcaption>{draftLabels.visual}</figcaption>
+  </figure>
+  <div class="work-slot__text">
+    <p class="eyebrow">{draftLabels.slot}</p>
+    <H class="work-slot__title">
+      {linked
+        ? <a href={`${routes.work}#${slot.slug}`}>{slot.title}&nbsp;<span class="arrow" aria-hidden="true">↗</span></a>
+        : slot.title}
+    </H>
+    <dl>
+      <div><dt>{copy.work.labels.problem}</dt><dd>{slot.problem}</dd></div>
+      <div><dt>{copy.work.labels.contribution}</dt><dd>{slot.contribution}</dd></div>
+      <div><dt>{copy.work.labels.evidence}</dt><dd>{slot.evidence}</dd></div>
+    </dl>
+  </div>
+</article>
